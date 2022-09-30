@@ -1,0 +1,26 @@
+body {
+	font-size: 16px;
+}
+
+.note {
+	height: 130px;
+}
+.note h1,
+p {
+	margin: 0;
+	padding: 0;
+}
+
+textarea,
+input {
+	margin-top: 2px;
+	font-family: 'Times New Roman', Times, serif;
+}
+button {
+	margin: 1px;
+}
+textarea {
+	white-space: pre-line;
+	width: 250px;
+	height: 75px;
+}
