@@ -1,26 +1,23 @@
 body {
-	font-size: 16px;
+	margin: 10px;
+	padding: 0;
 }
-
-.note {
-	height: 130px;
+input,
+textarea,
+button {
+	font-family: 'Times New Roman', Times, serif;
 }
-.note h1,
-p {
+p,
+h1 {
 	margin: 0;
 	padding: 0;
 }
-
-textarea,
-input {
-	margin-top: 2px;
-	font-family: 'Times New Roman', Times, serif;
+.gray {
+	color: gray;
+}
+pre {
+	font-size: 9px;
 }
 button {
-	margin: 1px;
-}
-textarea {
-	white-space: pre-line;
-	width: 250px;
-	height: 75px;
+	margin: 2px;
 }
