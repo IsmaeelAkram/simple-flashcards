@@ -5,6 +5,7 @@ import CardView from './components/CardView';
 import card from './card';
 
 function App() {
+	const [cardSet, setCardSet] = useState<string | null>(null);
 	const [cards, setCards] = useState<card[]>([]);
 	const [focusedCard, setFocusedCard] = useState<card | null>(null);
 	const [statusMessage, setStatusMessage] = useState<string>('Hello there');
@@ -14,8 +15,10 @@ function App() {
 		setTime(new Date().toLocaleTimeString());
 	}, 1000);
 
-	function loadCards() {
-		let newCards = localStorage.getItem('cards') || '';
+	function loadCards(src = localStorage.getItem('cards')) {
+		let newCards = src || '';
+		let setName = localStorage.getItem('set') || null;
+		setCardSet(setName);
 		if (cards) {
 			try {
 				let jsonNewCards = JSON.parse(newCards);
@@ -29,9 +32,52 @@ function App() {
 	}
 
 	function saveCards() {
+		if (cardSet) {
+			localStorage.setItem('set', cardSet);
+		}
 		localStorage.setItem('cards', JSON.stringify(cards));
 		console.log('Saved', cards);
 		setStatusMessage('Saved cards at ' + new Date().toLocaleTimeString());
+	}
+
+	function saveSet() {
+		const name = prompt('Enter a name for the set') || 'untitled';
+		const blob = new Blob([JSON.stringify(cards)], { type: 'text/plain' });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.download = `${name}.json`;
+		link.href = url;
+		link.click();
+		setCardSet(name);
+		localStorage.setItem('set', name);
+	}
+
+	function loadSet() {
+		const fileInput = document.createElement('input');
+		fileInput.type = 'file';
+		fileInput.addEventListener('change', (e) => {
+			const files = (e.target as HTMLInputElement).files;
+			let file: File;
+			if (files != null) {
+				file = files[0];
+			} else {
+				return;
+			}
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const text = (e.target as FileReader).result;
+				if (text) {
+					loadCards(text as string);
+					const setName = file.name.replace('.json', '');
+					setCardSet(setName);
+					localStorage.setItem('set', setName);
+				} else {
+					console.error('no text');
+				}
+			};
+			reader.readAsText(file);
+		});
+		fileInput.click();
 	}
 
 	const isInitialMount = useRef(true);
@@ -47,7 +93,10 @@ function App() {
 
 	return (
 		<div>
-			<h2>simple flashcards</h2>
+			{/* <h2>simple flashcards</h2> */}
+			<p>
+				<strong>{cardSet ? `Set: ${cardSet}` : 'No set selected'}</strong>
+			</p>
 
 			<CardView focusedCard={focusedCard} setFocusedCard={setFocusedCard} />
 
@@ -64,7 +113,12 @@ function App() {
 				setCards={setCards}
 				setStatusMessage={setStatusMessage}
 				saveCards={saveCards}
+				setCardSet={setCardSet}
 			/>
+			<button onClick={saveSet}>save to disk</button>
+			<button onClick={loadSet}>load from disk</button>
+			<br />
+			<br />
 			<p>{statusMessage}</p>
 			<p>
 				<span className="gray">Current time:</span>

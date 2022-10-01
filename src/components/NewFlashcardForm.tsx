@@ -6,11 +6,13 @@ export default function NewFlashcardForm({
 	setCards,
 	setStatusMessage,
 	saveCards,
+	setCardSet,
 }: {
 	cards: card[];
 	setStatusMessage: React.Dispatch<React.SetStateAction<string>>;
 	setCards: React.Dispatch<React.SetStateAction<card[]>>;
 	saveCards: () => void;
+	setCardSet: React.Dispatch<React.SetStateAction<string | null>>;
 }) {
 	const [newCard, setNewCard] = useState<card>({ id: crypto.randomUUID(), name: '', content: '' });
 
@@ -41,14 +43,14 @@ export default function NewFlashcardForm({
 			<button
 				onClick={() => {
 					setCards([]);
+					setCardSet(null);
+					localStorage.removeItem('set');
 					setStatusMessage('Cleared');
 				}}
 			>
 				clear
 			</button>
 			<button onClick={saveCards}>save</button>
-			<br />
-			<br />
 			{/* <pre>{JSON.stringify(newCard, undefined, 2)}</pre> */}
 		</div>
 	);
