@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import NewFlashcardForm from './components/NewFlashcardForm';
 import CardList from './components/CardList';
 import CardView from './components/CardView';
 import card from './card';
+import QuizletButton from './components/QuizletButton';
 
 function App() {
 	const [cardSet, setCardSet] = useState<string | null>(null);
@@ -117,6 +118,7 @@ function App() {
 			/>
 			<button onClick={saveSet}>save to disk</button>
 			<button onClick={loadSet}>load from disk</button>
+			<QuizletButton loadCards={loadCards} />
 			<br />
 			<br />
 			<p>{statusMessage}</p>
