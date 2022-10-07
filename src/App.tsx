@@ -98,16 +98,21 @@ function App() {
 			<p>
 				<strong>{cardSet ? `Set: ${cardSet}` : 'No set selected'}</strong>
 			</p>
+			<div className="flex">
+				<div>
+					<CardList
+						cards={cards}
+						setCards={setCards}
+						setStatusMessage={setStatusMessage}
+						setFocusedCard={setFocusedCard}
+						focusedCard={focusedCard}
+					/>
+				</div>
 
-			<CardView focusedCard={focusedCard} setFocusedCard={setFocusedCard} />
-
-			<CardList
-				cards={cards}
-				setCards={setCards}
-				setStatusMessage={setStatusMessage}
-				setFocusedCard={setFocusedCard}
-				focusedCard={focusedCard}
-			/>
+				<div>
+					<CardView focusedCard={focusedCard} setFocusedCard={setFocusedCard} />
+				</div>
+			</div>
 
 			<NewFlashcardForm
 				cards={cards}
